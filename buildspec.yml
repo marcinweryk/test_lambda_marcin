@@ -15,7 +15,7 @@ phases:
       - cd ..
       - ls -lh
       - zip -r learningpool.zip .
-      - aws lambda update-function-code --function-name learningpool --zip-file fileb://learningpool.zip
+      - cp learnigpool.zip s3://lambdatestmw/learningpool.zip
 
 artifacts:
   files:
