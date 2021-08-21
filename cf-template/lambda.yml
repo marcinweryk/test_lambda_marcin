@@ -36,6 +36,5 @@ Resources:
             Runtime: "Node.js 12"
             Code:
                 S3Bucket: !Ref 'SourceBucket'
-                S3Key: !Sub 'learningpool.zip'
 
 
