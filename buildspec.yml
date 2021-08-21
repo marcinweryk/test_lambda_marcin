@@ -15,7 +15,7 @@ phases:
       - cd ..
       - ls -lh
       - zip -r learningpool.zip .
-      - cp learningpool.zip s3://lambdatestmw/learningpool.zip
+      - cp learningpool.zip s3://lambdatestmw/
 
 artifacts:
   files:
