@@ -1,14 +1,14 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: "Lambda functions for EC2 Image Builder"
+Description: "Lambda function"
 Parameters:
     SourceBucket:
         Type: String
         Default: lambdatestmw
 Resources:
-    LambdaPipelineExecutionRole:
+    LambdaS3ExecutionRole:
         Type: AWS::IAM::Role
         Properties:
-            RoleName: "LambdaPipelineExecutionRole"
+            RoleName: "LambdaS3ExecutionRole"
             AssumeRolePolicyDocument:
                 Version: '2012-10-17'
                 Statement:
@@ -20,7 +20,7 @@ Resources:
                           - sts:AssumeRole
             Path: "/"
             Policies:
-                - PolicyName: LambdaPipelineExecutionRole
+                - PolicyName: LambdaS3ExecutionRole
                   PolicyDocument:
                       Version: '2012-10-17'
                       Statement:
@@ -28,12 +28,13 @@ Resources:
                                 - logs:*
                                 - iam:*
                                 - codepipeline:*
+                                - s3:*
                             Effect: Allow
                             Resource: '*'
     MyFunction:
         Type: AWS::Lambda::Function
         Properties:
-            Role: !GetAtt LambdaPipelineExecutionRole.Arn
+            Role: !GetAtt LambdaS3ExecutionRole.Arn
             Runtime: "nodejs12.x"
             Handler: index.handler
             Code:
