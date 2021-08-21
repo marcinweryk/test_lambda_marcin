@@ -38,5 +38,6 @@ Resources:
             Handler: index.handler
             Code:
                 S3Bucket: !Ref 'SourceBucket'
+                S3Key: !Sub 'learningpool.zip'
 
 
