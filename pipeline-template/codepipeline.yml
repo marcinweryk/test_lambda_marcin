@@ -117,7 +117,7 @@ Resources:
                   TemplatePath: 'BuildArtifact::cf-templates/lambda.yml'
                   Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 RunOrder: 3
-          - Name: ChangeSet
+          - Name: ExecChangeSet
             Actions:
               - Name: ExecuteChangeSet
                 InputArtifacts:
