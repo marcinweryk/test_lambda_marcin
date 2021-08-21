@@ -21,8 +21,7 @@ Parameters:
     Default: lambdatestmw
   PipelineName:
     Type: String
-    Default: LambdaBuilder
-
+    Default: ImageResizerPipeline
 
 Resources:
 

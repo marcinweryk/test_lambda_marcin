@@ -4,6 +4,10 @@ Parameters:
     SourceBucket:
         Type: String
         Default: lambdatestmw
+    ResizerBucket:
+        Type: String
+        Default: mwresizerbucket
+
 Resources:
     LambdaS3ExecutionRole:
         Type: AWS::IAM::Role
@@ -27,13 +31,14 @@ Resources:
                           - Action:
                                 - logs:*
                                 - iam:*
-                                - codepipeline:*
                                 - s3:*
                             Effect: Allow
                             Resource: '*'
-    MyFunction:
+
+    ImageResizer:
         Type: AWS::Lambda::Function
         Properties:
+            FunctionName: ImageResizer
             Role: !GetAtt LambdaS3ExecutionRole.Arn
             Runtime: "nodejs12.x"
             Handler: index.handler
@@ -41,4 +46,27 @@ Resources:
                 S3Bucket: !Ref 'SourceBucket'
                 S3Key: !Sub 'learningpool.zip'
 
+    UploadBucket:
+      Type: AWS::S3::Bucket
+      DependsOn: ProcessingLambdaPermission
+      Properties:
+        BucketName: !Ref ResizerBucket
+        NotificationConfiguration:
+          LambdaConfigurations:
+            - Event: "s3:ObjectCreated:*"
+              Function: !GetAtt ImageResizer.Arn
 
+    ProcessingLambdaPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: 'lambda:InvokeFunction'
+        FunctionName: !Ref ImageResizer
+        Principal: s3.amazonaws.com
+        SourceArn: !Sub 'arn:aws:s3:::${ResizerBucket}'
+        SourceAccount: !Ref AWS::AccountId
+
+    ResizedBucket:
+        DependsOn: UploadBucket
+        Type: AWS::S3::Bucket
+        Properties:
+            BucketName: !Sub ${ResizerBucket}-resized

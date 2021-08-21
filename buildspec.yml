@@ -20,5 +20,3 @@ phases:
 artifacts:
   files:
     - './cf-template/**/*'
-    - './learningpool/**/*'
-    - './pipeline-template/**/*'
