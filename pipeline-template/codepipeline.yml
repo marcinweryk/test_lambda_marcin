@@ -114,7 +114,7 @@ Resources:
                   RoleArn: !GetAtt 'CFNRole.Arn'
                   StackName: !Sub LambdaLP
                   ChangeSetName: !Sub ChangeSetLP
-                  TemplatePath: 'BuildArtifact::cf-templates/lambda.yml'
+                  TemplatePath: 'BuildArtifact::cf-template/lambda.yml'
                   Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
                 RunOrder: 3
           - Name: ExecChangeSet
