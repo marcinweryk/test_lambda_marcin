@@ -33,7 +33,8 @@ Resources:
     MyFunction:
         Type: AWS::Lambda::Function
         Properties:
-            Runtime: "Node.js 12"
+            Role: !GetAtt LambdaPipelineExecutionRole.Arn
+            Runtime: "nodejs12.x"
             Code:
                 S3Bucket: !Ref 'SourceBucket'
 
