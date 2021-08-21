@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "Lambda functions for EC2 Image Builder"
+Parameters:
+    SourceBucket:
+        Type: String
+        Default: lambdatestmw
+Resources:
+    LambdaPipelineExecutionRole:
+        Type: AWS::IAM::Role
+        Properties:
+            RoleName: "LambdaPipelineExecutionRole"
+            AssumeRolePolicyDocument:
+                Version: '2012-10-17'
+                Statement:
+                    - Effect: Allow
+                      Principal:
+                          Service:
+                              - lambda.amazonaws.com
+                      Action:
+                          - sts:AssumeRole
+            Path: "/"
+            Policies:
+                - PolicyName: LambdaPipelineExecutionRole
+                  PolicyDocument:
+                      Version: '2012-10-17'
+                      Statement:
+                          - Action:
+                                - logs:*
+                                - iam:*
+                                - codepipeline:*
+                            Effect: Allow
+                            Resource: '*'
+    MyFunction:
+        Type: AWS::Lambda::Function
+        Properties:
+            Runtime: "Node.js 12"
+            Code:
+                S3Bucket: !Ref 'SourceBucket'
+                S3Key: 'learningpool.zip'
+
+

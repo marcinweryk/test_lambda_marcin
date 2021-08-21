@@ -98,6 +98,42 @@ Resources:
                 Configuration:
                   ProjectName: !Ref Build
                 RunOrder: 2
+          - Name: ChangeSet
+            Actions:
+              - Name: CreateChangeSet
+                InputArtifacts:
+                  - Name: BuildArtifact
+                ActionTypeId:
+                  Category: Deploy
+                  Owner: AWS
+                  Provider: CloudFormation
+                  Version: "1"
+                OutputArtifacts: []
+                Configuration:
+                  ActionMode: CHANGE_SET_REPLACE
+                  RoleArn: !GetAtt 'CFNRole.Arn'
+                  StackName: !Sub LambdaLP
+                  ChangeSetName: !Sub ChangeSetLP
+                  TemplatePath: 'BuildArtifact::cf-templates/lambda.yml'
+                  Capabilities: CAPABILITY_IAM,CAPABILITY_NAMED_IAM,CAPABILITY_AUTO_EXPAND
+                RunOrder: 3
+          - Name: ChangeSet
+            Actions:
+              - Name: ExecuteChangeSet
+                InputArtifacts:
+                  - Name: BuildArtifact
+                ActionTypeId:
+                  Category: Deploy
+                  Owner: AWS
+                  Provider: CloudFormation
+                  Version: "1"
+                Configuration:
+                  ActionMode: CHANGE_SET_EXECUTE
+                  RoleArn: !GetAtt 'CFNRole.Arn'
+                  StackName: !Sub LambdaLP
+                  ChangeSetName: !Sub ChangeSetLP
+                  OutputFileName: DeployArtifact
+                RunOrder: 4
 
   CodePipelineServiceRole:
     Type: AWS::IAM::Role
