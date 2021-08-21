@@ -53,7 +53,7 @@ Resources:
         BucketName: !Ref ResizerBucket
         NotificationConfiguration:
           LambdaConfigurations:
-            - Event: "s3:ObjectCreated:*"
+            - Event: "s3:ObjectCreated:Put"
               Function: !GetAtt ImageResizer.Arn
 
     ProcessingLambdaPermission:
